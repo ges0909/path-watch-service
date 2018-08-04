@@ -2,15 +2,15 @@ package demo.config;
 
 import javax.validation.constraints.NotBlank;
 
-public class WatchDirConfig {
+public class PathConfig {
 
-  @NotBlank
-  String path;
+	@NotBlank
+	String path;
 
-  @NotBlank
-  String format;
+	@NotBlank
+	String format;
 
-  public String getPath() {
+	public String getPath() {
 		return this.path;
 	}
 
