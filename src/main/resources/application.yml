@@ -1,3 +1,7 @@
 watch:
-  path: C:\Users\Gerrit\Desktop
+  directories:
+    - path: C:\Users\Gerrit\Desktop\dir1
+      format: apache_error
+    - path: C:\Users\Gerrit\Desktop\dir2
+      format: apache_combined
   
