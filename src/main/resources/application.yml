@@ -1,7 +1,7 @@
 watch:
   folders:
-    - path: /Users/Gerrit/Desktop/dir1
+    - path: /Users/Gerrit/Desktop/Dir1
       format: apache_error
-    - path: /Users/Gerrit/Desktop/dir2
+    - path: /Users/Gerrit/Desktop/Dir2
       format: apache_combined
   

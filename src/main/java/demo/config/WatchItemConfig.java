@@ -2,7 +2,7 @@ package demo.config;
 
 import javax.validation.constraints.NotBlank;
 
-public class PathConfig {
+public class WatchItemConfig {
 
 	@NotBlank
 	String path;
