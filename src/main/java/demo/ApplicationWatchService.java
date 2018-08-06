@@ -24,7 +24,7 @@ import lombok.extern.apachecommons.CommonsLog;
 /**
  * Observes a list of directories to detect the creation of files in it.
  *
- * @author gerrit.schrader@gmail.com
+ * @author
  */
 @Service
 @CommonsLog
@@ -48,25 +48,31 @@ public class ApplicationWatchService {
           continue;
         }
         Watchable watchable = key.watchable();
-        Path dir = (Path) watchable;
-        Optional<WatchItemConfig> config = watchServiceConfig.findByPath(dir);
-        if (config.isPresent()) {
-          log.info("path found: " + dir);
-        } else {
-          log.error("path not found: " + dir);
+        Path head = (Path) watchable; // observed path
+        WatchEvent<Path> ev = cast(event);
+        Path tail = ev.context(); // name of file created/modified/deleted
+        Path file = head.resolve(tail);
+        Optional<WatchItemConfig> config = watchServiceConfig.findByPath(head);
+        if (!config.isPresent()) {
+          log.error("dir to observe not found in internal config: " + head);
         }
         if (kind == ENTRY_CREATE) {
-          log.info("CREATE: " + dir);
+          log.info("CREATE: " + file);
+          consolidate(file, config.get().getFormat());
         } else if (kind == ENTRY_MODIFY) {
-          log.info("MODIFY: " + dir);
+          log.info("MODIFY: " + file);
         } else if (kind == ENTRY_DELETE) {
-          log.info("DELETE: " + dir);
+          log.info("DELETE: " + file);
         }
       }
       if (!key.reset()) {
         break;
       }
     }
+
+  }
+
+  void consolidate(Path file, WatchItemConfig.Format format) {
 
   }
 

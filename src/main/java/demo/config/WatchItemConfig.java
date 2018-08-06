@@ -6,11 +6,15 @@ import javax.validation.constraints.NotBlank;
 
 public class WatchItemConfig {
 
+	public enum Format {
+		APACHE_ERROR, APACHE_COMBINED;
+	}
+
 	@NotBlank
 	Path path;
 
 	@NotBlank
-	String format;
+	Format format;
 
 	public Path getPath() {
 		return this.path;
@@ -20,11 +24,11 @@ public class WatchItemConfig {
 		this.path = path;
 	}
 
-	public String getFormat() {
+	public Format getFormat() {
 		return this.format;
 	}
 
-	public void setFormat(String format) {
+	public void setFormat(Format format) {
 		this.format = format;
 	}
 }

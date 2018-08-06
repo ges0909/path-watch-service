@@ -8,16 +8,19 @@
       "cwd": "${workspaceFolder}",
       "console": "internalConsole",
       "stopOnEntry": false,
-      "mainClass": "demo.Application",
-      "projectName": "path-watch-servive",
+      "mainClass": "",
       "args": ""
     },
     {
       "type": "java",
-      "name": "Debug (Attach)",
-      "request": "attach",
-      "hostName": "localhost",
-      "port": 0
+      "name": "Debug (Launch)-Application<path-watch-servive>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "console": "internalConsole",
+      "stopOnEntry": false,
+      "mainClass": "demo.Application",
+      "args": "",
+      "projectName": "path-watch-servive"
     }
   ]
 }
