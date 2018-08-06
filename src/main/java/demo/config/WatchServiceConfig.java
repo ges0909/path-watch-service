@@ -1,5 +1,6 @@
 package demo.config;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
@@ -24,7 +25,20 @@ public class WatchServiceConfig {
 		this.configs = folders;
 	}
 
-	public Optional<WatchItemConfig> findByPath(Path path) {
-		return configs.stream().filter(p -> p.getPath().equals(path.toString())).findAny();
+	private boolean isEqual(String path, WatchItemConfig other) {
+		try {
+			return other.getPath().toFile().getCanonicalPath().equals(path);
+		} catch (IOException e) {
+		}
+		return false;
+	}
+
+	public Optional<WatchItemConfig> findByPath(Path dir) {
+		try {
+			String path = dir.toFile().getCanonicalPath();
+			return configs.stream().filter(c -> isEqual(path, c)).findFirst();
+		} catch (IOException e) {
+		}
+		return Optional.empty();
 	}
 }

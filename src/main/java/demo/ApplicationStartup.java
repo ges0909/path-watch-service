@@ -2,8 +2,6 @@ package demo;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -37,9 +35,8 @@ public class ApplicationStartup implements ApplicationRunner {
 	 */
 	private void createDirsIfNotExist() throws IOException {
 		for (WatchItemConfig config : watchServiceConfig.getFolders()) {
-			Path path = Paths.get(config.getPath()).toAbsolutePath();
-			if (!Files.exists(path)) {
-				Files.createDirectories(path);
+			if (!Files.exists(config.getPath())) {
+				Files.createDirectories(config.getPath());
 			}
 		}
 	}

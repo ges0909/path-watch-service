@@ -8,10 +8,10 @@ import static java.nio.file.StandardWatchEventKinds.OVERFLOW;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
+import java.nio.file.Watchable;
 import java.util.Optional;
 
 import org.springframework.scheduling.annotation.Async;
@@ -37,9 +37,8 @@ public class ApplicationWatchService {
   @Async
   public void start(WatchServiceConfig watchServiceConfig) throws IOException, InterruptedException {
     WatchService watchService = FileSystems.getDefault().newWatchService();
-    WatchServiceConfig watchServiceConfig2 = watchServiceConfig;
-    for (WatchItemConfig config : watchServiceConfig2.getFolders()) {
-      Paths.get(config.getPath()).register(watchService, ENTRY_CREATE, ENTRY_MODIFY, ENTRY_DELETE, OVERFLOW);
+    for (WatchItemConfig config : watchServiceConfig.getFolders()) {
+      config.getPath().register(watchService, ENTRY_CREATE, ENTRY_MODIFY, ENTRY_DELETE, OVERFLOW);
     }
     WatchKey key;
     while ((key = watchService.take()) != null) {
@@ -48,20 +47,20 @@ public class ApplicationWatchService {
         if (kind == OVERFLOW) {
           continue;
         }
-        WatchEvent<Path> ev = cast(event);
-        Path path = ev.context().toAbsolutePath();
-        Optional<WatchItemConfig> config = watchServiceConfig2.findByPath(path);
+        Watchable watchable = key.watchable();
+        Path dir = (Path) watchable;
+        Optional<WatchItemConfig> config = watchServiceConfig.findByPath(dir);
         if (config.isPresent()) {
-          log.info("path found: " + path);
+          log.info("path found: " + dir);
         } else {
-          log.error("path not found: " + path);
+          log.error("path not found: " + dir);
         }
         if (kind == ENTRY_CREATE) {
-          log.info("CREATE: " + path);
+          log.info("CREATE: " + dir);
         } else if (kind == ENTRY_MODIFY) {
-          log.info("MODIFY: " + path);
+          log.info("MODIFY: " + dir);
         } else if (kind == ENTRY_DELETE) {
-          log.info("DELETE: " + path);
+          log.info("DELETE: " + dir);
         }
       }
       if (!key.reset()) {

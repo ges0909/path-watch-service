@@ -1,20 +1,22 @@
 package demo.config;
 
+import java.nio.file.Path;
+
 import javax.validation.constraints.NotBlank;
 
 public class WatchItemConfig {
 
 	@NotBlank
-	String path;
+	Path path;
 
 	@NotBlank
 	String format;
 
-	public String getPath() {
+	public Path getPath() {
 		return this.path;
 	}
 
-	public void setPath(String path) {
+	public void setPath(Path path) {
 		this.path = path;
 	}
 
